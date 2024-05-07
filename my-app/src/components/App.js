@@ -1,41 +1,50 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import BotCollection from './BotCollection';
 import YourBotArmy from './YourBotArmy';
-import './App.css';
+import SortBar from './SortBar';
+import { botsData } from './botsData'; // assuming you have a mock data file
+
 function App() {
-  const [bots, setBots] = useState([]);
+  const [bots, setBots] = useState(botsData);
   const [yourBotArmy, setYourBotArmy] = useState([]);
+  const [selectedClasses, setSelectedClasses] = useState([]);
 
-  useEffect(() => {
-    fetch('http://localhost:8001/bots')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch bots');
-        }
-        return response.json();
-      })
-      .then((data) => setBots(data))
-      .catch((error) => console.error('Error fetching bots:', error));
-  }, []);
-  
-
-  const addToArmy = (bot) => {
-    if (!yourBotArmy.includes(bot)) {
+  // Function to add a bot to YourBotArmy
+  const enlistBot = (bot) => {
+    if (!yourBotArmy.some(b => b.bot_class === bot.bot_class)) {
       setYourBotArmy([...yourBotArmy, bot]);
+      setBots(bots.filter(b => b.id !== bot.id));
     }
   };
 
+  // Function to remove a bot from YourBotArmy
   const releaseBot = (bot) => {
-    const updatedArmy = yourBotArmy.filter((b) => b.id !== bot.id);
-    setYourBotArmy(updatedArmy);
+    setYourBotArmy(yourBotArmy.filter(b => b.id !== bot.id));
+    setBots([...bots, bot]);
+  };
+
+  // Function to toggle selected classes for filtering
+  const toggleSelectedClass = (botClass) => {
+    if (selectedClasses.includes(botClass)) {
+      setSelectedClasses(selectedClasses.filter(c => c !== botClass));
+    } else {
+      setSelectedClasses([...selectedClasses, botClass]);
+    }
   };
 
   return (
     <div>
       <YourBotArmy yourBotArmy={yourBotArmy} onRelease={releaseBot} />
-      <BotCollection bots={bots} onAddToArmy={addToArmy} yourBotArmy={yourBotArmy} />
+      <SortBar />
+      <BotCollection 
+        bots={bots} 
+        onEnlist={enlistBot} 
+        selectedClasses={selectedClasses}
+        toggleSelectedClass={toggleSelectedClass}
+      />
     </div>
   );
 }
 
 export default App;
+
