@@ -8,9 +8,16 @@ function App() {
 
   useEffect(() => {
     fetch('http://localhost:8001/bots')
-      .then((response) => response.json())
-      .then((data) => setBots(data));
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch bots');
+        }
+        return response.json();
+      })
+      .then((data) => setBots(data))
+      .catch((error) => console.error('Error fetching bots:', error));
   }, []);
+  
 
   const addToArmy = (bot) => {
     if (!yourBotArmy.includes(bot)) {
