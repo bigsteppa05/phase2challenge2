@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Bot({ bot, onAddToArmy, isAdded }) {
+function Bott({ bot, onAddToArmy, isAdded }) {
   return (
     <div className={`bot-card ${isAdded ? 'added' : ''}`}>
       <img src={bot.avatar_url} alt={bot.name} className="medium-bot" />
@@ -16,4 +16,4 @@ function Bot({ bot, onAddToArmy, isAdded }) {
   );
 }
 
-export default Bot;
+export default Bott;

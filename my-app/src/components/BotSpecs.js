@@ -1,16 +1,19 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-function SortBar({ onSortBy }) {
+function BotSpecs({ bot, onEnlist }) {
   return (
     <div>
-      <label>Sort by: </label>
-      <select onChange={(e) => onSortBy(e.target.value)}>
-        <option value="health">Health</option>
-        <option value="damage">Damage</option>
-        <option value="armor">Armor</option>
-      </select>
+      <h2>Bot Specifications</h2>
+      <h3>{bot.name}</h3>
+      <p>Class: {bot.bot_class}</p>
+      <p>Health: {bot.health}</p>
+      <p>Damage: {bot.damage}</p>
+      <p>Armor: {bot.armor}</p>
+      <Link to="/">Back to List</Link>
+      <button onClick={() => onEnlist(bot)}>Enlist Bot</button>
     </div>
   );
 }
 
-export default SortBar;
+export default BotSpecs;

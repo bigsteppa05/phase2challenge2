@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-function BotCollection({ bots, onEnlist, selectedClasses, toggleSelectedClass }) {
+function BotCollection({ bots, selectedClasses, toggleSelectedClass }) {
   // Function to check if bot class is selected for filtering
   const isClassSelected = (botClass) => selectedClasses.includes(botClass);
 
@@ -11,11 +12,11 @@ function BotCollection({ bots, onEnlist, selectedClasses, toggleSelectedClass })
     <div>
       <h2>Bot Collection</h2>
       <div>
-        {bots.map(bot => (
+        {filteredBots.map(bot => (
           <div key={bot.id}>
             <h3>{bot.name}</h3>
             <p>Class: {bot.bot_class}</p>
-            <button onClick={() => onEnlist(bot)}>Enlist</button>
+            <Link to={`/bots/${bot.id}`}>View Details</Link> {/* Adjust the URL */}
           </div>
         ))}
       </div>
