@@ -1,27 +1,33 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, Route } from 'react-router-dom';
 
-function BotCollection({ bots, selectedClasses, toggleSelectedClass }) {
-  // Function to check if bot class is selected for filtering
-  const isClassSelected = (botClass) => selectedClasses.includes(botClass);
+function BotCollection({ handleEnlistment }) {
+  const [bots, setBots] = useState([]);
 
-  // Filter bots based on selected classes
-  const filteredBots = bots.filter(bot => selectedClasses.length === 0 || isClassSelected(bot.bot_class));
+  useEffect(() => {
+    fetch('http://localhost:3001/bots')
+      .then(response => response.json())
+      .then(data => setBots(data));
+  }, []);
 
   return (
-    <div>
-      <h2>Bot Collection</h2>
+    <Route exact path="/">
       <div>
-        {filteredBots.map(bot => (
-          <div key={bot.id}>
-            <h3>{bot.name}</h3>
-            <p>Class: {bot.bot_class}</p>
-            <Link to={`/bots/${bot.id}`}>View Details</Link> {/* Adjust the URL */}
-          </div>
-        ))}
+        <h2>Bot Collection</h2>
+        <ul>
+          {bots.map(bot => (
+            <li key={bot.id}>
+              <Link to={`/bot-specs/${bot.id}`}>{bot.name}</Link>
+              <button onClick={() => handleEnlistment(bot.id)}>Enlist</button>
+            </li>
+          ))}
+        </ul>
       </div>
-    </div>
+    </Route>
   );
 }
 
 export default BotCollection;
+
+
+

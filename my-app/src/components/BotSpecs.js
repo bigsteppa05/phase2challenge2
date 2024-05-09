@@ -1,19 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function BotSpecs({ bot, onEnlist }) {
+function BotSpecs({ bot }) {
   return (
     <div>
-      <h2>Bot Specifications</h2>
-      <h3>{bot.name}</h3>
-      <p>Class: {bot.bot_class}</p>
-      <p>Health: {bot.health}</p>
-      <p>Damage: {bot.damage}</p>
-      <p>Armor: {bot.armor}</p>
-      <Link to="/">Back to List</Link>
-      <button onClick={() => onEnlist(bot)}>Enlist Bot</button>
+      <h2>Bot Specs</h2>
+      <p>Name: {bot.name}</p>
+      <p>Class: {bot.class}</p>
+      <Link to="/">Back to list</Link>
     </div>
   );
 }
 
 export default BotSpecs;
+
